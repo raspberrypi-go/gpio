@@ -5,7 +5,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/davecheney/gpio"
+	"github.com/raspberrypi-go/gpio"
 )
 
 var (

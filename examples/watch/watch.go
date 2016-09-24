@@ -2,21 +2,23 @@ package main
 
 import (
 	"fmt"
-	"github.com/davecheney/gpio"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/raspberrypi-go/gpio"
 )
 
 func main() {
-	// set GPIO22 to input mode
+	// // set GPIO22 to input mode
 	pin, err := gpio.OpenPin(gpio.GPIO22, gpio.ModeInput)
 	if err != nil {
 		fmt.Printf("Error opening pin! %s\n", err)
 		return
 	}
-	// set GPIO17 to output mode
-	power, err := gpio.OpenPin(gpio.GPIO17, gpio.ModeOutput)
+
+	power, err := gpio.OpenPin(gpio.GPIO15, gpio.ModeOutput)
+
 	if err != nil {
 		fmt.Printf("Error opening pin! %s\n", err)
 		return
@@ -28,9 +30,8 @@ func main() {
 	go func() {
 		for _ = range c {
 			fmt.Println("Closing pin and terminating program.")
-			power.Clear()
+			power.Set()
 			pin.Close()
-			power.Close()
 			os.Exit(0)
 		}
 	}()
@@ -43,15 +44,27 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Now watching pin 22 on a falling edge.")
+	// fmt.Println("Now watching pin 22 on a falling edge.")
 
-	for {
-		fmt.Println("Setting power high")
+	// set GPIO14 to output mode
+	ring := func(step time.Duration) {
 		power.Set()
-		time.Sleep(2000 * time.Millisecond)
-		fmt.Println("Setting power low")
+		time.Sleep(step)
 		power.Clear()
-		time.Sleep(2000 * time.Millisecond)
+		time.Sleep(step)
+	}
+
+	step := 100
+	for {
+		// for i := 0; i < 1000; i++ {
+		ring(time.Second)
+		// }
+		// if step < 10000 {
+		// 	step += 100
+		// } else {
+		// 	step = 100
+		// }
+		fmt.Println(step)
 	}
 
 }

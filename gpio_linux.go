@@ -23,6 +23,8 @@ const (
 	GPIO9     = 9
 	GPIO10    = 10
 	GPIO11    = 11
+	GPIO14    = 14
+	GPIO15    = 15
 	GPIO17    = 17
 	GPIO18    = 18
 	GPIO22    = 22
